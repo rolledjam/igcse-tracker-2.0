@@ -1,225 +1,2250 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>IGCSE Pastel Pro 2025</title>
-    <link href='https://fonts.googleapis.com' rel='stylesheet'>
-    <style>
-        :root { 
-            --bg: #fdfdfd; --card: #ffffff; --text: #333; --border: #e9ecef;
-            --math: #d1ecf1; --phys: #fff3cd; --chem: #d4edda; --bio: #f8d7da;
-            --current: #f8f9fa;
-        }
-        body.dark-mode { 
-            --bg: #121212; --card: #1e1e1e; --text: #f8f9fa; --border: #333;
-            --math: #0c5460; --phys: #856404; --chem: #155724; --bio: #721c24;
-            --current: #121212;
-        }
-        body { 
-            font-family: 'Quicksand', sans-serif; background: var(--bg); color: var(--text); 
-            margin: 0; padding: 0; min-height: 100vh; transition: 0.4s; display: flex; flex-direction: column;
-        }
-        header { 
-            padding: 20px 40px; background: var(--card); border-bottom: 4px solid var(--current);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
-        }
-        .mode-toggle { background: var(--bg); border: 2px solid var(--border); padding: 10px 15px; border-radius: 50px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; color: var(--text); }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; width: 100%; box-sizing: border-box; flex: 1; }
-        .search-area { text-align: center; margin-bottom: 40px; }
-        #mainSearch { width: 100%; max-width: 600px; padding: 20px; border: 3px solid var(--border); border-radius: 50px; background: var(--card); color: var(--text); font-family: 'Quicksand'; font-weight: 700; font-size: 1rem; outline: none; }
+  <meta charset="UTF-8" />
+  <title>Exam Paper Tracker – IGCSE & A‑Level</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05070b;
+      --bg-elevated: #0f141c;
+      --bg-subtle: #121826;
+      --border-subtle: rgba(255,255,255,0.04);
+      --accent: #4f46e5;
+      --accent-soft: rgba(79,70,229,0.16);
+      --accent-soft-strong: rgba(79,70,229,0.35);
+      --accent-muted: #a5b4fc;
+      --accent-green: #22c55e;
+      --accent-amber: #fbbf24;
+      --accent-red: #f97373;
+      --fg: #e5e7eb;
+      --fg-soft: #9ca3af;
+      --fg-softer: #6b7280;
+      --shadow-soft: 0 22px 45px rgba(0,0,0,0.55);
+      --radius-lg: 18px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --transition-fast: 160ms ease-out;
+      --transition-med: 220ms ease;
+      --input-bg: #020617;
+    }
+    .theme-light {
+      --bg: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --bg-subtle: #f9fafb;
+      --border-subtle: rgba(15,23,42,0.06);
+      --accent: #4f46e5;
+      --accent-soft: rgba(79,70,229,0.08);
+      --accent-soft-strong: rgba(79,70,229,0.2);
+      --accent-muted: #4f46e5;
+      --fg: #111827;
+      --fg-soft: #4b5563;
+      --fg-softer: #6b7280;
+      --shadow-soft: 0 18px 40px rgba(15,23,42,0.10);
+      --input-bg: #f9fafb;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 0 0, #1d2441 0, #05070b 34%, #000 100%);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+    .theme-light body {
+      background: radial-gradient(circle at 0 0, #e0e7ff 0, #eef2ff 40%, #f3f4f6 100%);
+    }
+    #app-root {
+      width: 100%;
+      max-width: 1240px;
+      padding: 22px 18px 32px;
+    }
+    @media (min-width: 900px) {
+      #app-root {
+        padding: 32px 22px 40px;
+      }
+    }
 
-        /* Bolder Grid */
-        #dashboard { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; }
-        .sub-card { 
-            background: var(--card); border: 5px solid var(--border); border-radius: 25px; 
-            padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 12px 0 var(--border);
-        }
-        .sub-card:hover { transform: translateY(-5px); border-color: #aaa; }
-        .sub-card.selected { border-color: #28a745; box-shadow: 0 12px 0 #28a745; }
-        .sub-card h3 { font-weight: 700; margin: 10px 0; font-size: 1.4rem; }
+    /* Top bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 30%;
+      background: conic-gradient(from 140deg, #4f46e5, #22c55e, #f97316, #4f46e5);
+      padding: 2px;
+      position: relative;
+      box-shadow: 0 10px 35px rgba(79,70,229,0.6);
+    }
+    .brand-badge-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 10%, rgba(255,255,255,0.3) 0, transparent 46%), #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+      font-weight: 700;
+      font-size: 0.70rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .brand-title {
+      font-weight: 600;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+    }
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--fg-softer);
+    }
 
-        /* Tracker View UI */
-        #trackerView { display: none; }
-        .tab-bar { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid #222; margin-bottom: 25px; }
-        .tab-item { padding: 12px 25px; background: var(--card); border: 2px solid var(--border); border-radius: 50px; cursor: pointer; font-weight: 700; white-space: nowrap; }
-        .tab-item.active { background: var(--current); border-color: var(--text); }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        .card { background: var(--card); border-radius: 25px; padding: 25px; border: 1px solid var(--border); overflow-x: auto; }
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        td { padding: 15px; background: rgba(0,0,0,0.03); border-radius: 15px; text-align: center; font-weight: 700; }
-        
-        .mark-box { 
-            background: var(--card); border: 2px solid var(--border); color: var(--text); 
-            width: 60px; text-align: center; padding: 8px; border-radius: 12px; font-weight: 800; font-family: 'Inter'; outline: none;
-        }
+    /* Generic controls */
+    .chip-toggle {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: linear-gradient(120deg, rgba(15,23,42,0.90), rgba(15,23,42,0.65));
+      padding: 4px;
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.55);
+    }
+    .chip-toggle-btn {
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: transparent;
+      color: var(--fg-softer);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast), transform 80ms ease-out;
+    }
+    .chip-toggle-btn span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.6);
+    }
+    .chip-toggle-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent-muted);
+      transform: translateY(-0.5px);
+    }
+    .chip-toggle-btn.active span.dot {
+      background: var(--accent);
+    }
+    .chip-toggle-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
 
-        .nav-btn { position: fixed; bottom: 30px; right: 30px; background: #333; color: #fff; padding: 22px 45px; border-radius: 60px; font-weight: 700; cursor: pointer; border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.3); z-index: 1001; }
-        .back-btn { position: fixed; bottom: 30px; left: 30px; background: #eee; color: #333; padding: 15px 30px; border-radius: 50px; cursor: pointer; border: 1px solid #ddd; font-weight: 700; z-index: 1001; }
-        
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
-        #drawer { position: fixed; right: -450px; top: 0; width: 400px; height: 100%; background: var(--card); border-left: 10px solid var(--current); padding: 40px; transition: 0.4s; z-index: 2000; overflow-y: auto; box-sizing: border-box; }
-        #drawer.open { right: 0; }
-        textarea { width: 100%; height: 200px; background: var(--bg); border: 2px solid var(--border); color: var(--text); padding: 15px; border-radius: 15px; font-family: inherit; }
-        .save-btn { width: 100%; padding: 18px; background: #333; color: #fff; font-weight: 700; border: none; border-radius: 15px; cursor: pointer; margin-top: 20px; }
-        footer { padding: 40px; text-align: center; opacity: 0.5; font-weight: 700; }
-    </style>
+    .icon-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      background: rgba(15,23,42,0.75);
+      color: var(--fg-soft);
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.55);
+      transition: border var(--transition-fast), background var(--transition-fast), transform 80ms ease-out, box-shadow var(--transition-fast);
+    }
+    .theme-light .icon-btn {
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 8px 20px rgba(148,163,184,0.50);
+    }
+    .icon-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+    .icon-btn:hover {
+      border-color: rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.9);
+      box-shadow: 0 16px 35px rgba(15,23,42,0.7);
+    }
+    .theme-light .icon-btn:hover {
+      background: #ffffff;
+      box-shadow: 0 18px 40px rgba(148,163,184,0.75);
+    }
+    .icon-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    /* Layout main */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.9fr) minmax(0, 2.3fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: linear-gradient(140deg, rgba(15,23,42,0.98), rgba(15,23,42,0.86));
+      border-radius: 22px;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(148,163,184,0.16);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-light .panel {
+      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      border-color: rgba(148,163,184,0.25);
+    }
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0 0, rgba(129,140,248,0.22), transparent 45%),
+        radial-gradient(circle at 100% 0, rgba(236,72,153,0.20), transparent 46%);
+      opacity: 0.14;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .panel-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .panel-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .panel-title {
+      font-size: 0.90rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--fg-soft);
+    }
+    .panel-subtitle {
+      font-size: 0.78rem;
+      color: var(--fg-softer);
+    }
+
+    /* Dashboard */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+    .metric-card {
+      border-radius: var(--radius-md);
+      background: rgba(15,23,42,0.88);
+      border: 1px solid rgba(148,163,184,0.18);
+      padding: 9px 10px 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-light .metric-card {
+      background: rgba(249,250,251,0.9);
+      border-color: rgba(148,163,184,0.40);
+    }
+    .metric-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--fg-softer);
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .metric-suffix {
+      font-size: 0.70rem;
+      color: var(--fg-softer);
+    }
+    .metric-trend {
+      font-size: 0.70rem;
+      color: var(--accent-green);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .metric-trend.bad {
+      color: var(--accent-red);
+    }
+    .metric-spark {
+      position: absolute;
+      inset: auto 6px 4px 6px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(79,70,229,0.3), transparent);
+      opacity: 0.5;
+    }
+
+    .subject-progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 190px;
+      overflow: hidden auto;
+      padding-right: 4px;
+      margin-top: 6px;
+    }
+    .subject-progress-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .subject-progress-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .subject-progress-title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--fg);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .subject-progress-code {
+      font-size: 0.70rem;
+      color: var(--fg-softer);
+    }
+    .subject-progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      overflow: hidden;
+      position: relative;
+    }
+    .theme-light .subject-progress-bar {
+      background: rgba(209,213,219,0.7);
+    }
+    .subject-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #22c55e);
+      border-radius: inherit;
+      transition: width 220ms ease-out;
+    }
+    .subject-progress-meta {
+      font-size: 0.72rem;
+      color: var(--fg-softer);
+      margin-top: 2px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .subject-progress-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.25);
+      padding: 2px 7px;
+      font-size: 0.68rem;
+      color: var(--fg-soft);
+    }
+
+    /* Subject selector */
+    .course-subjects-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .search-input {
+      min-width: 0;
+      flex: 1;
+      position: relative;
+    }
+    .search-input input {
+      width: 100%;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.30);
+      background: rgba(15,23,42,0.72);
+      color: var(--fg);
+      padding: 7px 26px 7px 26px;
+      font-size: 0.76rem;
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform 80ms ease-out;
+    }
+    .theme-light .search-input input {
+      background: #f9fafb;
+    }
+    .search-input input:focus {
+      border-color: rgba(129,140,248,0.8);
+      box-shadow: 0 0 0 1px rgba(129,140,248,0.6);
+      transform: translateY(-0.5px);
+    }
+    .search-input svg {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 13px;
+      height: 13px;
+      color: var(--fg-softer);
+      pointer-events: none;
+    }
+    .search-input .clear-search {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--fg-softer);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .search-input.has-value .clear-search {
+      display: flex;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 9px;
+      max-height: 240px;
+      overflow: hidden auto;
+      padding-right: 4px;
+    }
+    .subject-card {
+      border-radius: 14px;
+      padding: 10px 9px 9px;
+      background: rgba(15,23,42,0.86);
+      border: 1px solid rgba(148,163,184,0.25);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), transform 80ms ease-out, background var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-light .subject-card {
+      background: rgba(249,250,251,0.95);
+      border-color: rgba(148,163,184,0.40);
+    }
+    .subject-card::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background: radial-gradient(circle at 0 0, rgba(129,140,248,0.2), transparent 55%);
+      opacity: 0;
+      transition: opacity 200ms ease-out;
+      pointer-events: none;
+    }
+    .subject-card:hover {
+      border-color: rgba(129,140,248,0.9);
+      box-shadow: 0 16px 35px rgba(15,23,42,0.75);
+      transform: translateY(-1px);
+      background: rgba(15,23,42,0.96);
+    }
+    .theme-light .subject-card:hover {
+      box-shadow: 0 18px 42px rgba(148,163,184,0.7);
+      background: #ffffff;
+    }
+    .subject-card:hover::before {
+      opacity: 1;
+    }
+    .subject-card.selected {
+      border-color: rgba(129,140,248,1);
+      box-shadow: 0 18px 40px rgba(79,70,229,0.9);
+      background: radial-gradient(circle at 0 0, rgba(129,140,248,0.55), rgba(15,23,42,0.98));
+    }
+    .theme-light .subject-card.selected {
+      background: radial-gradient(circle at 0 0, rgba(129,140,248,0.25), #ffffff);
+    }
+    .subject-name {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .subject-code {
+      font-size: 0.72rem;
+      color: var(--fg-soft);
+    }
+    .subject-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+    }
+    .subject-chip {
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.35);
+      color: var(--fg-softer);
+    }
+    .subject-progress-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.4);
+    }
+
+    /* Filters & controls */
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .filters-row-section {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .filters-row label {
+      font-size: 0.72rem;
+      color: var(--fg-softer);
+    }
+    .filters-row input[type="number"],
+    .filters-row select {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(15,23,42,0.75);
+      color: var(--fg);
+      padding: 4px 9px;
+      font-size: 0.75rem;
+      outline: none;
+      min-width: 0;
+    }
+    .theme-light .filters-row input[type="number"],
+    .theme-light .filters-row select {
+      background: #f9fafb;
+    }
+    .filters-row input[type="number"]:focus,
+    .filters-row select:focus {
+      border-color: rgba(129,140,248,0.8);
+    }
+
+    .segmented {
+      display: inline-flex;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.35);
+      overflow: hidden;
+      background: rgba(15,23,42,0.7);
+    }
+    .theme-light .segmented {
+      background: rgba(243,244,246,0.9);
+    }
+    .segmented button {
+      border: none;
+      background: none;
+      padding: 4px 9px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      color: var(--fg-softer);
+      min-width: 0;
+      white-space: nowrap;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+    .segmented button.active {
+      background: var(--accent-soft);
+      color: var(--accent-muted);
+    }
+
+    /* Papers table */
+    .papers-container {
+      max-height: 360px;
+      overflow: hidden auto;
+      padding-right: 6px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.22);
+    }
+    .theme-light .papers-container {
+      background: #f9fafb;
+      border-color: rgba(148,163,184,0.30);
+    }
+    table.papers-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.74rem;
+    }
+    table.papers-table thead {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0.97), rgba(15,23,42,0.9));
+      z-index: 1;
+    }
+    .theme-light table.papers-table thead {
+      background: linear-gradient(180deg, #f9fafb, #e5e7eb);
+    }
+    table.papers-table th,
+    table.papers-table td {
+      text-align: left;
+      padding: 6px 8px;
+      border-bottom: 1px solid rgba(31,41,55,0.7);
+      vertical-align: middle;
+    }
+    .theme-light table.papers-table td {
+      border-bottom-color: rgba(209,213,219,0.9);
+    }
+    table.papers-table th {
+      font-size: 0.70rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-softer);
+      position: relative;
+    }
+    table.papers-table tbody tr:nth-child(2n) td {
+      background: rgba(15,23,42,0.4);
+    }
+    .theme-light table.papers-table tbody tr:nth-child(2n) td {
+      background: rgba(243,244,246,0.9);
+    }
+    table.papers-table tbody tr:hover td {
+      background: rgba(79,70,229,0.21);
+    }
+    .theme-light table.papers-table tbody tr:hover td {
+      background: rgba(129,140,248,0.20);
+    }
+
+    .paper-badge {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 2px 7px;
+      font-size: 0.70rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--fg-soft);
+      background: rgba(15,23,42,0.6);
+    }
+    .theme-light .paper-badge {
+      background: rgba(255,255,255,0.85);
+    }
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(129,140,248,0.9);
+    }
+
+    .paper-marks {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(15,23,42,0.8);
+      border-radius: 999px;
+      padding: 3px 6px 3px 6px;
+      border: 1px solid rgba(148,163,184,0.55);
+    }
+    .theme-light .paper-marks {
+      background: rgba(255,255,255,0.8);
+    }
+    .paper-marks input {
+      width: 46px;
+      border: none;
+      background: transparent;
+      color: var(--fg);
+      font-size: 0.72rem;
+      outline: none;
+      text-align: right;
+    }
+    .paper-marks span.total {
+      font-size: 0.70rem;
+      color: var(--fg-softer);
+    }
+
+    .paper-complete-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      color: var(--fg-softer);
+    }
+    .toggle-checkbox {
+      width: 26px;
+      height: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.55);
+      background: rgba(15,23,42,0.8);
+      position: relative;
+      cursor: pointer;
+      transition: background var(--transition-fast), border var(--transition-fast);
+    }
+    .theme-light .toggle-checkbox {
+      background: rgba(249,250,251,0.95);
+    }
+    .toggle-checkbox::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+    .toggle-checkbox.checked {
+      background: var(--accent-soft-strong);
+      border-color: rgba(79,70,229,0.9);
+    }
+    .toggle-checkbox.checked::after {
+      transform: translateX(10px);
+      background: #f9fafb;
+    }
+
+    .paper-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .paper-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.55);
+      background: rgba(15,23,42,0.85);
+      color: var(--fg-soft);
+      padding: 3px 8px;
+      font-size: 0.70rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: background var(--transition-fast), border var(--transition-fast), transform 80ms ease-out;
+    }
+    .theme-light .paper-btn {
+      background: rgba(255,255,255,0.9);
+    }
+    .paper-btn svg {
+      width: 11px;
+      height: 11px;
+    }
+    .paper-btn:hover {
+      background: rgba(79,70,229,0.22);
+      border-color: rgba(129,140,248,0.95);
+      transform: translateY(-0.5px);
+    }
+    .paper-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .paper-links-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    /* Row progress */
+    .row-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 120px;
+    }
+    .row-progress-bar {
+      position: relative;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      overflow: hidden;
+    }
+    .theme-light .row-progress-bar {
+      background: rgba(209,213,219,0.8);
+    }
+    .row-progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #4f46e5);
+      transition: width 220ms ease-out;
+    }
+    .row-progress-text {
+      font-size: 0.68rem;
+      color: var(--fg-softer);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Mini streak / heatmap */
+    .mini-stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .streak-chip {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 3px 9px;
+      font-size: 0.70rem;
+      color: var(--fg-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15,23,42,0.75);
+    }
+    .theme-light .streak-chip {
+      background: rgba(249,250,251,0.9);
+    }
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(14, 1fr);
+      gap: 2px;
+      flex: 1;
+      min-width: 120px;
+      justify-items: flex-end;
+    }
+    .heat-cell {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(15,23,42,0.85);
+    }
+    .theme-light .heat-cell {
+      background: rgba(209,213,219,0.9);
+    }
+    .heat-lvl-1 { background: rgba(79,70,229,0.40); }
+    .heat-lvl-2 { background: rgba(129,140,248,0.9); }
+    .heat-lvl-3 { background: rgba(34,197,94,0.85); }
+
+    /* Export/import bar */
+    .export-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .export-row small {
+      font-size: 0.68rem;
+      color: var(--fg-softer);
+      margin-right: auto;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.70);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+    }
+    .modal-backdrop.visible {
+      display: flex;
+    }
+    .modal {
+      width: min(480px, 96vw);
+      background: linear-gradient(145deg, #020617, #020617, #111827);
+      border-radius: 20px;
+      border: 1px solid rgba(129,140,248,0.7);
+      box-shadow: 0 28px 70px rgba(15,23,42,0.95);
+      padding: 16px 16px 14px;
+      color: var(--fg);
+      position: relative;
+    }
+    .theme-light .modal {
+      background: #ffffff;
+      border-color: rgba(129,140,248,0.7);
+      box-shadow: 0 26px 60px rgba(15,23,42,0.4);
+    }
+    .modal-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .modal-sub {
+      font-size: 0.74rem;
+      color: var(--fg-softer);
+      margin-bottom: 10px;
+    }
+    .modal textarea {
+      width: 100%;
+      min-height: 90px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.9);
+      color: var(--fg);
+      font-size: 0.76rem;
+      padding: 7px 9px;
+      resize: vertical;
+      outline: none;
+    }
+    .theme-light .modal textarea {
+      background: #f9fafb;
+    }
+    .modal textarea:focus {
+      border-color: rgba(129,140,248,0.9);
+      box-shadow: 0 0 0 1px rgba(129,140,248,0.7);
+    }
+    .modal-section-label {
+      font-size: 0.72rem;
+      color: var(--fg-softer);
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .modal-files-list {
+      font-size: 0.72rem;
+      color: var(--fg-soft);
+      max-height: 90px;
+      overflow: auto;
+      padding-right: 4px;
+      border-radius: 8px;
+      background: rgba(15,23,42,0.7);
+      border: 1px dashed rgba(148,163,184,0.5);
+      padding: 5px 7px;
+    }
+    .theme-light .modal-files-list {
+      background: rgba(249,250,251,0.9);
+    }
+    .modal-files-list.empty {
+      font-style: italic;
+      color: var(--fg-softer);
+    }
+    .modal-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      align-items: center;
+    }
+    .btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15,23,42,0.85);
+      color: var(--fg-soft);
+      transition: background var(--transition-fast), border var(--transition-fast), transform 80ms ease-out;
+    }
+    .theme-light .btn {
+      background: rgba(249,250,251,0.9);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #22c55e);
+      color: #f9fafb;
+      border-color: transparent;
+      box-shadow: 0 18px 40px rgba(79,70,229,0.85);
+    }
+    .btn-outline {
+      border-color: rgba(148,163,184,0.65);
+    }
+    .btn:hover {
+      transform: translateY(-0.5px);
+    }
+    .btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+    .modal-close-btn {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      border: none;
+      background: transparent;
+      color: var(--fg-softer);
+      cursor: pointer;
+    }
+
+    input[type="file"] {
+      font-size: 0.70rem;
+      color: var(--fg-softer);
+    }
+
+    /* Utility empty state */
+    .empty-state {
+      padding: 26px 12px;
+      text-align: center;
+      color: var(--fg-softer);
+      font-size: 0.82rem;
+    }
+    .empty-state strong {
+      color: var(--fg-soft);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,0.5);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148,163,184,0.75);
+    }
+  </style>
 </head>
 <body>
-
-<header>
-    <div style="width: 80px;"></div>
-    <h1 id="title">IGCSE SYSTEM 2025</h1>
-    <button class="mode-toggle" onclick="toggleTheme()" id="themeBtn">🌙 DARK</button>
-</header>
-
-<div class="container" id="homeView">
-    <div class="search-area"><input type="text" id="mainSearch" placeholder="SEARCH (CODE OR NAME)" onkeyup="filterGrid()"></div>
-    <div id="dashboard"></div>
-</div>
-
-<div class="container" id="trackerView">
-    <div class="tab-bar" id="trackerTabs"></div>
-    <div class="card"><table><thead><tr id="hRow"></tr></thead><tbody id="tBody"></tbody></table></div>
-</div>
-
-<button class="nav-btn" id="startBtn" onclick="launchTracker()" style="display:none;">START TRACKING (0)</button>
-<button class="back-btn" id="backBtn" onclick="location.reload()" style="display:none;">← DASHBOARD</button>
-
-<div id="overlay" onclick="closeDrawer()"></div>
-<div id="drawer">
-    <h2 id="dHead" style="font-weight:800;">MISTAKE LOG</h2>
-    <textarea id="nArea" placeholder="Enter notes..."></textarea>
-    <div style="margin-top:20px;">
-        <input type="file" id="fIn" accept="image/*,application/pdf" style="margin-bottom:10px;">
-        <div id="fPrev" style="width:100%; border-radius:10px; overflow:hidden;"></div>
+  <div id="app-root">
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-badge">
+          <div class="brand-badge-inner">
+            PPR
+          </div>
+        </div>
+        <div>
+          <div class="brand-title">PaperPath Studio</div>
+          <div class="brand-sub">IGCSE & A‑Level past papers companion</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="chip-toggle" id="courseToggle">
+          <button class="chip-toggle-btn active" data-course="igcse">
+            <span class="dot"></span>IGCSE
+          </button>
+          <button class="chip-toggle-btn" data-course="alevel">
+            <span class="dot"></span>A‑Level
+          </button>
+        </div>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 9 9 0 1 1-9-10 1 1 0 0 1 1 0Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Theme</span>
+        </button>
+      </div>
     </div>
-    <button class="save-btn" onclick="saveData()">SAVE_DATA</button>
-</div>
 
-<footer>MADE BY ROLLEDJAM &copy; 2025</footer>
+    <div class="layout">
+      <!-- Left: Dashboard + Subject overview -->
+      <section class="panel">
+        <div class="panel-inner">
+          <header class="panel-header">
+            <div class="panel-title-wrap">
+              <div class="panel-title">Overview</div>
+              <div class="panel-subtitle">Progress across all years and subjects</div>
+            </div>
+          </header>
 
-<script>
-    const subjects = [
-        { n: "Mathematics", c: "0580", p: [2, 4], m: (y) => y >= 2025 ? {2:100, 4:100} : {2:70, 4:130}, color: "var(--math)" },
-        { n: "Physics", c: "0625", p: [2, 4, 6], m: (y) => ({2:40, 4:80, 6:40}), color: "var(--phys)" },
-        { n: "Chemistry", c: "0620", p: [2, 4, 6], m: (y) => ({2:40, 4:80, 6:40}), color: "var(--chem)" },
-        { n: "Biology", c: "0610", p: [2, 4, 6], m: (y) => ({2:40, 4:80, 6:40}), color: "var(--bio)" },
-        { n: "Additional Mathematics", c: "0606", p: [1, 2], m: (y) => ({1:80, 2:80}), color: "var(--math)" },
-        { n: "Computer Science", c: "0478", p: [1, 2], m: (y) => ({1:75, 2:75}), color: "var(--phys)" },
-        { n: "Environmental Management", c: "0680", p: [1, 2], m: (y) => ({1:80, 2:80}), color: "var(--chem)" },
-        { n: "Coordinated Sciences", c: "0654", p: [2, 4, 6], m: (y) => ({2:40, 4:120, 6:60}), color: "var(--bio)" },
-        { n: "Business Studies", c: "0450", p: [1, 2], m: (y) => y >= 2020 ? {1:80, 2:80} : {1:100, 2:100}, color: "var(--math)" },
-        { n: "Economics", c: "0455", p: [1, 2], m: (y) => ({1:30, 2:90}), color: "var(--phys)" }
-    ];
+          <div class="dashboard-grid" id="dashboardMetrics">
+            <div class="metric-card">
+              <div class="metric-label">Total Completed</div>
+              <div class="metric-value"><span id="metricCompleted">0</span><span class="metric-suffix">papers</span></div>
+              <div class="metric-trend" id="metricCompletedTrend"><span>+0 today</span></div>
+              <div class="metric-spark"></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Total Attempted</div>
+              <div class="metric-value"><span id="metricAttempted">0</span><span class="metric-suffix">papers</span></div>
+              <div class="metric-trend" id="metricAttemptedTrend"><span>+0 this week</span></div>
+              <div class="metric-spark"></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Average Score</div>
+              <div class="metric-value"><span id="metricAverage">–</span><span class="metric-suffix">%</span></div>
+              <div class="metric-trend" id="metricAverageTrend"><span>Keep building your curve</span></div>
+              <div class="metric-spark"></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Focus Window</div>
+              <div class="metric-value"><span id="metricYearRange">–</span></div>
+              <div class="metric-trend" id="metricYearRangeText"><span>Adjust in filters</span></div>
+              <div class="metric-spark"></div>
+            </div>
+          </div>
 
-    let selectedIdx = [], activeIdx = -1, activePaperID = '', curFile = '';
+          <div class="mini-stats">
+            <div class="streak-chip">
+              <span>Streak</span>
+              <strong id="streakDays">0 days</strong>
+            </div>
+            <div class="heatmap" id="heatmap">
+              <!-- cells injected -->
+            </div>
+          </div>
 
-    function toggleTheme() {
-        const body = document.body;
-        const btn = document.getElementById('themeBtn');
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            btn.innerText = "🌙 DARK";
-        } else {
-            body.classList.add('dark-mode');
-            btn.innerText = "☀️ LIGHT";
+          <div class="panel-header" style="margin-top:14px;margin-bottom:8px;">
+            <div class="panel-title-wrap">
+              <div class="panel-title">Subjects</div>
+              <div class="panel-subtitle">Subject‑wise completion across your window</div>
+            </div>
+          </div>
+
+          <div class="subject-progress-list" id="subjectProgressList">
+            <!-- rows injected -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Subject selection + Paper table -->
+      <section class="panel">
+        <div class="panel-inner">
+          <header class="panel-header">
+            <div class="panel-title-wrap">
+              <div class="panel-title">Workspace</div>
+              <div class="panel-subtitle" id="currentSubjectSubtitle">Pick a subject to start tracking</div>
+            </div>
+          </header>
+
+          <div class="course-subjects-header">
+            <div class="search-input" id="subjectSearchWrapper">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="m15.5 15.5 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              <input id="subjectSearch" placeholder="Search subject by name or code…" />
+              <button class="clear-search" id="clearSubjectSearch" title="Clear search">×</button>
+            </div>
+          </div>
+
+          <div class="subjects-grid" id="subjectsGrid">
+            <!-- subject cards -->
+          </div>
+
+          <hr style="margin:10px 0 10px;border:none;border-top:1px solid rgba(148,163,184,0.2);" />
+
+          <div class="filters-row">
+            <div class="filters-row-section">
+              <label>Years</label>
+              <input type="number" id="startYearInput" min="2000" max="2030" value="2015" />
+              <span style="font-size:0.72rem;color:var(--fg-softer);">to</span>
+              <input type="number" id="endYearInput" min="2000" max="2030" value="2025" />
+            </div>
+            <div class="filters-row-section">
+              <label>Season</label>
+              <select id="filterSeason">
+                <option value="all">All</option>
+                <option value="feb-march">Feb / Mar</option>
+                <option value="may-june">May / Jun</option>
+                <option value="oct-nov">Oct / Nov</option>
+              </select>
+            </div>
+            <div class="filters-row-section">
+              <label>Paper</label>
+              <select id="filterPaper">
+                <option value="all">All</option>
+                <option value="1">Paper 1</option>
+                <option value="2">Paper 2</option>
+                <option value="3">Paper 3</option>
+                <option value="4">Paper 4</option>
+              </select>
+            </div>
+            <div class="filters-row-section">
+              <label>State</label>
+              <div class="segmented" id="completionFilter">
+                <button data-state="all" class="active">Any</button>
+                <button data-state="completed">Done</button>
+                <button data-state="pending">Todo</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="papers-container" id="papersContainer">
+            <div class="empty-state" id="emptyPapers">
+              <strong>No subject selected.</strong><br />
+              Choose a subject above to see all papers across your year window.
+            </div>
+            <table class="papers-table" id="papersTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>Paper</th>
+                  <th>Marks</th>
+                  <th>State</th>
+                  <th>Revision</th>
+                  <th>Links</th>
+                  <th>Subject&nbsp;Progress</th>
+                </tr>
+              </thead>
+              <tbody id="papersTbody">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="export-row">
+            <small>Data is stored safely in your browser (localStorage).</small>
+            <button class="icon-btn" id="exportBtn" title="Export all data as JSON">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 10h10M7 14h6M4 5h16v14H4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Export</span>
+            </button>
+            <label class="icon-btn" for="importInput" title="Import previously exported JSON">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 10h10M7 14h6M4 5h16v14H4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 8v8m0 0-3-3m3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Import</span>
+              <input id="importInput" type="file" accept="application/json" style="display:none;" />
+            </label>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Mistake notes modal -->
+  <div class="modal-backdrop" id="notesModalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="notesModalTitle">
+      <button class="modal-close-btn" id="closeNotesModal" title="Close">✕</button>
+      <div class="modal-title" id="notesModalTitle">Mistake notes</div>
+      <div class="modal-sub" id="notesModalContext"></div>
+      <div class="modal-section-label">Text notes</div>
+      <textarea id="notesTextarea" placeholder="Write the mistakes you made, patterns you notice, and what to revise next…"></textarea>
+      <div class="modal-section-label">Attach files (PDFs, images, etc.)</div>
+      <input type="file" id="notesFileInput" multiple />
+      <div class="modal-section-label">Attached (stored as references only)</div>
+      <div id="notesFilesList" class="modal-files-list empty">
+        No files saved yet.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="clearNotesBtn">Clear</button>
+        <button class="btn btn-primary" id="saveNotesBtn">Save notes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------- Data model & helpers ---------- */
+
+      const SUBJECTS = [
+        // IGCSE
+        { code: "0625", name: "Physics", course: "igcse" },
+        { code: "0620", name: "Chemistry", course: "igcse" },
+        { code: "0580", name: "Mathematics", course: "igcse" },
+        { code: "0606", name: "Additional Mathematics", course: "igcse" },
+        { code: "0450", name: "Business Studies", course: "igcse" },
+        { code: "0478", name: "Computer Science", course: "igcse" },
+        { code: "0500", name: "First Language English", course: "igcse" },
+        { code: "0520", name: "French", course: "igcse" },
+        // A-Level
+        { code: "9709", name: "Mathematics", course: "alevel" },
+        { code: "9702", name: "Physics", course: "alevel" },
+        { code: "9701", name: "Chemistry", course: "alevel" },
+        { code: "9618", name: "Computer Science", course: "alevel" },
+        { code: "9609", name: "Business", course: "alevel" },
+        { code: "9708", name: "Economics", course: "alevel" }
+      ];
+
+      const SEASONS = [
+        { key: "feb-march", label: "Feb / Mar" },
+        { key: "may-june", label: "May / Jun" },
+        { key: "oct-nov", label: "Oct / Nov" }
+      ];
+
+      const PAPER_NUMBERS = [1, 2, 3, 4];
+      const VARIANTS = [1, 2, 3];
+
+      const STORAGE_KEY = "paperTrackerDataV1";
+
+      const defaultState = {
+        settings: {
+          theme: "dark",
+          course: "igcse",
+          startYear: 2015,
+          endYear: 2025,
+          filterSeason: "all",
+          filterPaper: "all",
+          completionFilter: "all"
+        },
+        // subjects[code].papers[paperKey] -> data
+        subjects: {},
+        // streak/heatmap: completions keyed by ISO date: count
+        completionsByDate: {}
+      };
+
+      let state = loadState();
+      let ui = {};
+      let currentSubjectCode = null;
+      let currentNotesPaper = null;
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return structuredClone(defaultState);
+          const parsed = JSON.parse(raw);
+          return mergeWithDefault(parsed);
+        } catch (e) {
+          console.warn("Failed to parse stored data, resetting.", e);
+          return structuredClone(defaultState);
         }
-    }
+      }
 
-    function init() {
-        const grid = document.getElementById('dashboard');
-        grid.innerHTML = '';
-        subjects.forEach((s, i) => {
-            const card = document.createElement('div');
-            card.className = 'sub-card';
-            card.innerHTML = `<p style="font-weight:800; opacity:0.5;">${s.c}</p><h3>${s.n}</h3>`;
-            card.onclick = () => {
-                if(selectedIdx.includes(i)) {
-                    selectedIdx = selectedIdx.filter(x => x !== i);
-                    card.classList.remove('selected');
-                } else {
-                    selectedIdx.push(i);
-                    card.classList.add('selected');
-                }
-                const btn = document.getElementById('startBtn');
-                btn.style.display = selectedIdx.length > 0 ? 'block' : 'none';
-                btn.innerText = `START TRACKING (${selectedIdx.length})`;
-            };
-            grid.appendChild(card);
+      function mergeWithDefault(existing) {
+        const merged = structuredClone(defaultState);
+        if (existing && typeof existing === "object") {
+          if (existing.settings) Object.assign(merged.settings, existing.settings);
+          if (existing.subjects) merged.subjects = existing.subjects;
+          if (existing.completionsByDate) merged.completionsByDate = existing.completionsByDate;
+        }
+        return merged;
+      }
+
+      function persistState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function paperKey({ year, seasonKey, paper, variant }) {
+        return year + "|" + seasonKey + "|" + paper + "|" + variant;
+      }
+
+      function parsePaperKey(key) {
+        const [yearStr, seasonKey, paperStr, variantStr] = key.split("|");
+        return {
+          year: parseInt(yearStr, 10),
+          seasonKey,
+          paper: parseInt(paperStr, 10),
+          variant: parseInt(variantStr, 10)
+        };
+      }
+
+      // Total marks logic – includes a few real-looking year changes
+      function getTotalMarks(subjectCode, year, paperNumber) {
+        // Simple but deterministic rules; easy to extend
+        if (subjectCode === "0580") { // IGCSE Maths
+          if (year < 2020 && paperNumber === 2) return 70;
+          if (year >= 2020 && paperNumber === 2) return 80;
+          return 80;
+        }
+        if (subjectCode === "0625") { // IGCSE Physics
+          if (paperNumber === 1) return 40;
+          if (paperNumber === 2) return 80;
+          if (paperNumber === 3) return year >= 2016 ? 40 : 30;
+          return 80;
+        }
+        if (subjectCode === "0478" || subjectCode === "9618") { // CS
+          if (paperNumber === 1) return 75;
+          if (paperNumber === 2) return 75;
+          if (paperNumber === 3) return 75;
+          return 60;
+        }
+        if (subjectCode === "9709") { // A-Level Maths
+          if (paperNumber === 1 || paperNumber === 3) return 75;
+          if (paperNumber === 2 || paperNumber === 4) return 60;
+        }
+        if (subjectCode === "9702" || subjectCode === "0620" || subjectCode === "9701") {
+          if (paperNumber === 1) return 40;
+          if (paperNumber === 2) return 80;
+          if (paperNumber === 3) return 40;
+          return 60;
+        }
+        // Default
+        return 80;
+      }
+
+      function ensureSubjectData(code) {
+        if (!state.subjects[code]) state.subjects[code] = { papers: {} };
+        return state.subjects[code];
+      }
+
+      function clampYearRange(startYear, endYear) {
+        const min = 2002;
+        const max = 2025;
+        let s = isNaN(startYear) ? 2015 : startYear;
+        let e = isNaN(endYear) ? 2025 : endYear;
+        s = Math.max(min, Math.min(s, max));
+        e = Math.max(s, Math.min(e, max));
+        return [s, e];
+      }
+
+      function getTodayISO() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      /* ---------- UI initialization ---------- */
+
+      function initRefs() {
+        ui.courseToggle = document.getElementById("courseToggle");
+        ui.themeToggle = document.getElementById("themeToggle");
+        ui.subjectsGrid = document.getElementById("subjectsGrid");
+        ui.subjectSearch = document.getElementById("subjectSearch");
+        ui.subjectSearchWrapper = document.getElementById("subjectSearchWrapper");
+        ui.clearSubjectSearch = document.getElementById("clearSubjectSearch");
+        ui.currentSubjectSubtitle = document.getElementById("currentSubjectSubtitle");
+
+        ui.startYearInput = document.getElementById("startYearInput");
+        ui.endYearInput = document.getElementById("endYearInput");
+        ui.filterSeason = document.getElementById("filterSeason");
+        ui.filterPaper = document.getElementById("filterPaper");
+        ui.completionFilter = document.getElementById("completionFilter");
+
+        ui.papersContainer = document.getElementById("papersContainer");
+        ui.papersTable = document.getElementById("papersTable");
+        ui.papersTbody = document.getElementById("papersTbody");
+        ui.emptyPapers = document.getElementById("emptyPapers");
+
+        ui.metricCompleted = document.getElementById("metricCompleted");
+        ui.metricAttempted = document.getElementById("metricAttempted");
+        ui.metricAverage = document.getElementById("metricAverage");
+        ui.metricYearRange = document.getElementById("metricYearRange");
+        ui.metricYearRangeText = document.getElementById("metricYearRangeText");
+        ui.subjectProgressList = document.getElementById("subjectProgressList");
+        ui.metricCompletedTrend = document.getElementById("metricCompletedTrend");
+        ui.metricAttemptedTrend = document.getElementById("metricAttemptedTrend");
+        ui.metricAverageTrend = document.getElementById("metricAverageTrend");
+        ui.streakDays = document.getElementById("streakDays");
+        ui.heatmap = document.getElementById("heatmap");
+
+        ui.exportBtn = document.getElementById("exportBtn");
+        ui.importInput = document.getElementById("importInput");
+
+        ui.notesModalBackdrop = document.getElementById("notesModalBackdrop");
+        ui.notesModalContext = document.getElementById("notesModalContext");
+        ui.notesTextarea = document.getElementById("notesTextarea");
+        ui.notesFileInput = document.getElementById("notesFileInput");
+        ui.notesFilesList = document.getElementById("notesFilesList");
+        ui.closeNotesModal = document.getElementById("closeNotesModal");
+        ui.saveNotesBtn = document.getElementById("saveNotesBtn");
+        ui.clearNotesBtn = document.getElementById("clearNotesBtn");
+      }
+
+      function initThemeFromState() {
+        const theme = state.settings.theme === "light" ? "light" : "dark";
+        if (theme === "light") {
+          document.documentElement.classList.add("theme-light");
+        }
+      }
+
+      function initHeatmapSkeleton() {
+        ui.heatmap.innerHTML = "";
+        for (let i = 0; i < 28; i++) {
+          const cell = document.createElement("div");
+          cell.className = "heat-cell";
+          ui.heatmap.appendChild(cell);
+        }
+      }
+
+      /* ---------- Rendering ---------- */
+
+      function renderCourseToggle() {
+        const buttons = ui.courseToggle.querySelectorAll(".chip-toggle-btn");
+        buttons.forEach(btn => {
+          const course = btn.dataset.course;
+          btn.classList.toggle("active", course === state.settings.course);
         });
-    }
+      }
 
-    function filterGrid() {
-        const val = document.getElementById('mainSearch').value.toUpperCase();
-        document.querySelectorAll('.sub-card').forEach(c => c.style.display = c.innerText.toUpperCase().includes(val) ? 'block' : 'none');
-    }
+      function renderSubjectsGrid() {
+        const course = state.settings.course;
+        const query = ui.subjectSearch.value.trim().toLowerCase();
+        const subjects = SUBJECTS.filter(s => s.course === course);
+        ui.subjectsGrid.innerHTML = "";
 
-    function launchTracker() {
-        document.getElementById('homeView').style.display = 'none';
-        document.getElementById('trackerView').style.display = 'block';
-        document.getElementById('backBtn').style.display = 'block';
-        document.getElementById('startBtn').style.display = 'none';
-        const bar = document.getElementById('trackerTabs');
-        bar.innerHTML = '';
-        selectedIdx.forEach(idx => {
-            const t = document.createElement('div');
-            t.className = 'tab-item';
-            t.innerText = subjects[idx].n;
-            t.onclick = () => { activeIdx = idx; document.querySelectorAll('.tab-item').forEach(x => x.classList.remove('active')); t.classList.add('active'); renderTable(); };
-            bar.appendChild(t);
+        const hasQuery = query.length > 0;
+        ui.subjectSearchWrapper.classList.toggle("has-value", hasQuery);
+
+        const filtered = subjects.filter(s => {
+          if (!query) return true;
+          return (
+            s.name.toLowerCase().includes(query) ||
+            s.code.toLowerCase().includes(query)
+          );
         });
-        bar.firstChild.click();
-    }
 
-    function renderTable() {
-        const s = subjects[activeIdx];
-        document.documentElement.style.setProperty('--current', s.color);
-        document.getElementById('hRow').innerHTML = `<th>Year</th><th>Series</th><th>Var</th>` + s.p.map(p => `<th>P${p}</th>`).join('');
-        const tbody = document.getElementById('tBody'); tbody.innerHTML = '';
-        for (let y = 2025; y >= 2010; y--) {
-            const marks = s.m(y);
-            ['Feb/Mar', 'May/Jun', 'Oct/Nov'].forEach(sess => {
-               [1, 2, 3].forEach(v => {
-                    const rowID = `RJ-${s.c}-${y}-${sess}-${v}`;
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td style="font-weight:800;">${y}</td><td style="color:#aaa;font-size:11px">${sess}</td><td style="color:#ccc">V${v}</td>`;
-                    s.p.forEach(p => {
-                        const id = rowID + '-p' + p;
-                        const score = localStorage.getItem(id + '-m') || '';
-                        tr.innerHTML += `<td>
-                            <input type="checkbox" ${localStorage.getItem(id)?'checked':''} onchange="localStorage.setItem('${id}', this.checked)">
-                            <input type="number" class="mark-box" value="${score}" oninput="valInput(this, ${marks[p]}, '${id}')">
-                            <span style="font-size:11px;color:#bbb"> / ${marks[p]}</span>
-                            <button style="border:none;background:none;cursor:pointer;font-size:16px;" onclick="openDrawer('${id}','${y} ${sess} V${v} P${p}')">📝</button>
-                        </td>`;
-                    });
-                    tbody.appendChild(tr);
+        if (!filtered.length) {
+          const div = document.createElement("div");
+          div.className = "empty-state";
+          div.textContent = "No subjects match your search.";
+          ui.subjectsGrid.appendChild(div);
+          return;
+        }
+
+        filtered.forEach(subject => {
+          const card = document.createElement("div");
+          card.className = "subject-card";
+          if (subject.code === currentSubjectCode) card.classList.add("selected");
+
+          const title = document.createElement("div");
+          title.className = "subject-name";
+          title.textContent = subject.name;
+
+          const code = document.createElement("div");
+          code.className = "subject-code";
+          code.textContent = subject.code;
+
+          const metaRow = document.createElement("div");
+          metaRow.className = "subject-meta-row";
+
+          const chip = document.createElement("div");
+          chip.className = "subject-chip";
+          chip.textContent = course === "igcse" ? "IGCSE" : "A‑Level";
+
+          const dot = document.createElement("div");
+          dot.className = "subject-progress-dot";
+          const subjStats = computeSubjectStats(subject.code);
+          if (subjStats.completed > 0) {
+            dot.style.background = "linear-gradient(135deg,#22c55e,#4ade80)";
+          } else if (subjStats.attempted > 0) {
+            dot.style.background = "linear-gradient(135deg,#f97316,#facc15)";
+          }
+
+          metaRow.appendChild(chip);
+          metaRow.appendChild(dot);
+
+          card.appendChild(title);
+          card.appendChild(code);
+          card.appendChild(metaRow);
+
+          card.addEventListener("click", () => {
+            currentSubjectCode = subject.code;
+            renderSubjectsGrid();
+            renderPaperTable();
+            renderSubjectSubtitle();
+            renderDashboard();
+          });
+
+          ui.subjectsGrid.appendChild(card);
+        });
+      }
+
+      function renderSubjectSubtitle() {
+        if (!currentSubjectCode) {
+          ui.currentSubjectSubtitle.textContent = "Pick a subject to start tracking";
+          return;
+        }
+        const subj = SUBJECTS.find(s => s.code === currentSubjectCode);
+        const [sYear, eYear] = clampYearRange(state.settings.startYear, state.settings.endYear);
+        ui.currentSubjectSubtitle.textContent = subj
+          ? subj.name + " (" + subj.code + ") • " + sYear + "–" + eYear
+          : "Selected subject • " + sYear + "–" + eYear;
+      }
+
+      function generatePapersForSubject(code) {
+        const [startYear, endYear] = clampYearRange(state.settings.startYear, state.settings.endYear);
+        const papers = [];
+        for (let year = startYear; year <= endYear; year++) {
+          for (const season of SEASONS) {
+            for (const paper of PAPER_NUMBERS) {
+              for (const variant of VARIANTS) {
+                papers.push({
+                  subjectCode: code,
+                  year,
+                  seasonKey: season.key,
+                  seasonLabel: season.label,
+                  paper,
+                  variant,
+                  total: getTotalMarks(code, year, paper)
                 });
-            });
+              }
+            }
+          }
         }
-    }
+        return papers;
+      }
 
-    function valInput(input, max, id) {
-        input.value = input.value.replace(/[^0-9]/g, '');
-        if (parseInt(input.value) > max) input.value = max;
-        localStorage.setItem(id + '-m', input.value);
-    }
+      function applyPaperFilters(papers) {
+        const seasonFilter = state.settings.filterSeason;
+        const paperFilter = state.settings.filterPaper;
+        const completionFilter = state.settings.completionFilter;
+        const subjData = ensureSubjectData(currentSubjectCode);
 
-    function openDrawer(id, label) {
-        activePaperID = id;
-        document.getElementById('dHead').innerText = label;
-        document.getElementById('nArea').value = localStorage.getItem(id + '-n') || '';
-        document.getElementById('drawer').classList.add('open');
-        document.getElementById('overlay').style.display = 'block';
-    }
+        return papers.filter(p => {
+          if (seasonFilter !== "all" && p.seasonKey !== seasonFilter) return false;
+          if (paperFilter !== "all" && String(p.paper) !== paperFilter) return false;
+          if (completionFilter !== "all") {
+            const key = paperKey(p);
+            const stored = subjData.papers[key];
+            const isCompleted = stored && !!stored.completed;
+            if (completionFilter === "completed" && !isCompleted) return false;
+            if (completionFilter === "pending" && isCompleted) return false;
+          }
+          return true;
+        });
+      }
 
-    function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
-    function saveData() { localStorage.setItem(activePaperID + '-n', document.getElementById('nArea').value); closeDrawer(); }
+      function renderPaperTable() {
+        if (!currentSubjectCode) {
+          ui.papersTable.style.display = "none";
+          ui.emptyPapers.style.display = "block";
+          return;
+        }
+        const subjData = ensureSubjectData(currentSubjectCode);
+        let papers = generatePapersForSubject(currentSubjectCode);
+        papers = applyPaperFilters(papers);
 
-    document.addEventListener('DOMContentLoaded', init);
-</script>
+        if (!papers.length) {
+          ui.papersTable.style.display = "none";
+          ui.emptyPapers.style.display = "block";
+          ui.emptyPapers.innerHTML = "<strong>No papers match your filters.</strong><br/>Try widening the year range or filter options.";
+          return;
+        }
+
+        ui.emptyPapers.style.display = "none";
+        ui.papersTable.style.display = "table";
+        ui.papersTbody.innerHTML = "";
+
+        const subjectStats = computeSubjectStats(currentSubjectCode);
+        papers.forEach(p => {
+          const key = paperKey(p);
+          const stored = subjData.papers[key] || {};
+          const marks = stored.marks ?? "";
+          const completed = !!stored.completed;
+          const notesExists = stored.notes && stored.notes.trim().length > 0;
+          const notesFiles = Array.isArray(stored.files) ? stored.files : [];
+
+          const tr = document.createElement("tr");
+
+          // Paper descriptor
+          const tdPaper = document.createElement("td");
+          const line1 = document.createElement("div");
+          line1.className = "paper-badge";
+          const dot = document.createElement("span");
+          dot.className = "pill-dot";
+          line1.appendChild(dot);
+          line1.appendChild(document.createTextNode("Y" + p.year + " • " + p.seasonLabel));
+          const line2 = document.createElement("div");
+          line2.style.fontSize = "0.70rem";
+          line2.style.color = "var(--fg-softer)";
+          line2.textContent = "Paper " + p.paper + " • Variant " + p.variant;
+          tdPaper.appendChild(line1);
+          tdPaper.appendChild(line2);
+
+          // Marks
+          const tdMarks = document.createElement("td");
+          const marksWrap = document.createElement("div");
+          marksWrap.className = "paper-marks";
+          const input = document.createElement("input");
+          input.type = "number";
+          input.min = "0";
+          input.max = String(p.total);
+          input.value = marks;
+          input.placeholder = "–";
+          input.addEventListener("change", () => {
+            const v = input.value.trim();
+            const numeric = v === "" ? null : Math.max(0, Math.min(p.total, Number(v)));
+            if (v !== "" && isNaN(numeric)) {
+              input.value = "";
+              return;
+            }
+            savePaperField(p, { marks: numeric, total: p.total });
+            renderDashboard();
+          });
+          const totalSpan = document.createElement("span");
+          totalSpan.className = "total";
+          totalSpan.textContent = "/ " + p.total;
+          marksWrap.appendChild(input);
+          marksWrap.appendChild(totalSpan);
+          tdMarks.appendChild(marksWrap);
+
+          // Completed toggle
+          const tdState = document.createElement("td");
+          const stateWrap = document.createElement("div");
+          stateWrap.className = "paper-complete-wrap";
+          const toggle = document.createElement("div");
+          toggle.className = "toggle-checkbox" + (completed ? " checked" : "");
+          const label = document.createElement("span");
+          label.textContent = completed ? "Done" : "Todo";
+          toggle.addEventListener("click", () => {
+            const newStatus = !toggle.classList.contains("checked");
+            toggle.classList.toggle("checked", newStatus);
+            label.textContent = newStatus ? "Done" : "Todo";
+            savePaperField(p, { completed: newStatus });
+            registerCompletionDate(newStatus);
+            renderDashboard();
+          });
+          stateWrap.appendChild(toggle);
+          stateWrap.appendChild(label);
+          tdState.appendChild(stateWrap);
+
+          // Mistakes
+          const tdRev = document.createElement("td");
+          const revBtns = document.createElement("div");
+          revBtns.className = "paper-actions";
+          const notesBtn = document.createElement("button");
+          notesBtn.className = "paper-btn";
+          notesBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M6 5h9l3 3v11H6z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 9h6M9 13h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Notes</span>';
+          if (notesExists || (notesFiles && notesFiles.length)) {
+            notesBtn.style.borderColor = "rgba(52,211,153,0.9)";
+            notesBtn.style.background = "rgba(16,185,129,0.20)";
+            notesBtn.style.color = "#6ee7b7";
+          }
+          notesBtn.addEventListener("click", () => {
+            openNotesModal(p, stored);
+          });
+          revBtns.appendChild(notesBtn);
+          tdRev.appendChild(revBtns);
+
+          // Links
+          const tdLinks = document.createElement("td");
+          const linksGroup = document.createElement("div");
+          linksGroup.className = "paper-links-group";
+
+          const qpBtn = document.createElement("button");
+          qpBtn.className = "paper-btn";
+          qpBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M8 5h8l3 3v11H5V5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 5v4h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Question</span>';
+          qpBtn.addEventListener("click", () => {
+            const url = buildPaperUrl(p, "qp");
+            window.open(url, "_blank");
+          });
+
+          const msBtn = document.createElement("button");
+          msBtn.className = "paper-btn";
+          msBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h8M5 17h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="m16 16 2 2 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Markscheme</span>';
+          msBtn.addEventListener("click", () => {
+            const url = buildPaperUrl(p, "ms");
+            window.open(url, "_blank");
+          });
+
+          linksGroup.appendChild(qpBtn);
+          linksGroup.appendChild(msBtn);
+          tdLinks.appendChild(linksGroup);
+
+          // Row / subject progress
+          const tdProgress = document.createElement("td");
+          const rowProg = document.createElement("div");
+          rowProg.className = "row-progress";
+          const progBar = document.createElement("div");
+          progBar.className = "row-progress-bar";
+          const progFill = document.createElement("div");
+          progFill.className = "row-progress-fill";
+          const subjRatio = subjectStats.total > 0 ? (subjectStats.completed / subjectStats.total) : 0;
+          progFill.style.width = (subjRatio * 100).toFixed(1) + "%";
+          progBar.appendChild(progFill);
+          const progText = document.createElement("div");
+          progText.className = "row-progress-text";
+          progText.innerHTML = '<span>' + subjectStats.completed + " / " + subjectStats.total + ' done</span><span>' + (subjRatio * 100).toFixed(0) + '%</span>';
+          rowProg.appendChild(progBar);
+          rowProg.appendChild(progText);
+          tdProgress.appendChild(rowProg);
+
+          tr.appendChild(tdPaper);
+          tr.appendChild(tdMarks);
+          tr.appendChild(tdState);
+          tr.appendChild(tdRev);
+          tr.appendChild(tdLinks);
+          tr.appendChild(tdProgress);
+
+          ui.papersTbody.appendChild(tr);
+        });
+      }
+
+      function buildPaperUrl(p, type) {
+        const season = p.seasonKey;
+        const base = "/papers/";
+        return base + encodeURIComponent(p.subjectCode) + "/" + p.year + "/" + season + "/" + type;
+      }
+
+      function computeSubjectStats(subjectCode) {
+        const subjData = state.subjects[subjectCode];
+        if (!subjData) return { attempted: 0, completed: 0, total: 0 };
+
+        const [start, end] = clampYearRange(state.settings.startYear, state.settings.endYear);
+        let attempted = 0;
+        let completed = 0;
+        let total = 0;
+
+        const allPapers = generatePapersForSubject(subjectCode);
+        total = allPapers.length;
+
+        for (const p of allPapers) {
+          if (p.year < start || p.year > end) continue;
+          const key = paperKey(p);
+          const stored = subjData.papers[key];
+          if (!stored) continue;
+          if (stored.marks != null) attempted += 1;
+          if (stored.completed) completed += 1;
+        }
+        return { attempted, completed, total };
+      }
+
+      function renderSubjectProgressList() {
+        ui.subjectProgressList.innerHTML = "";
+        const course = state.settings.course;
+        const subjects = SUBJECTS.filter(s => s.course === course);
+
+        if (!subjects.length) return;
+
+        subjects.forEach(subj => {
+          const stats = computeSubjectStats(subj.code);
+          if (stats.total === 0) return;
+
+          const item = document.createElement("div");
+          item.className = "subject-progress-item";
+
+          const main = document.createElement("div");
+          main.className = "subject-progress-main";
+
+          const title = document.createElement("div");
+          title.className = "subject-progress-title";
+          const left = document.createElement("span");
+          left.textContent = subj.name;
+          const right = document.createElement("span");
+          right.className = "subject-progress-code";
+          right.textContent = subj.code;
+          title.appendChild(left);
+          title.appendChild(right);
+
+          const bar = document.createElement("div");
+          bar.className = "subject-progress-bar";
+          const fill = document.createElement("div");
+          fill.className = "subject-progress-fill";
+          const ratio = stats.total ? (stats.completed / stats.total) : 0;
+          fill.style.width = (ratio * 100).toFixed(1) + "%";
+          bar.appendChild(fill);
+
+          const meta = document.createElement("div");
+          meta.className = "subject-progress-meta";
+          meta.innerHTML =
+            '<span>' + stats.completed + " of " + stats.total + " completed</span>" +
+            '<span>' + stats.attempted + " attempted</span>";
+
+          main.appendChild(title);
+          main.appendChild(bar);
+          main.appendChild(meta);
+
+          const pill = document.createElement("div");
+          pill.className = "subject-progress-pill";
+          pill.textContent = (ratio * 100).toFixed(0) + "%";
+
+          item.appendChild(main);
+          item.appendChild(pill);
+          ui.subjectProgressList.appendChild(item);
+        });
+      }
+
+      function computeGlobalStats() {
+        let completed = 0;
+        let attempted = 0;
+        let sumScore = 0;
+        let numScore = 0;
+
+        for (const subjectCode of Object.keys(state.subjects)) {
+          const subjData = state.subjects[subjectCode];
+          if (!subjData || !subjData.papers) continue;
+          for (const [key, value] of Object.entries(subjData.papers)) {
+            const meta = parsePaperKey(key);
+            const [start, end] = clampYearRange(state.settings.startYear, state.settings.endYear);
+            if (meta.year < start || meta.year > end) continue;
+
+            if (value.marks != null && value.total) {
+              attempted++;
+              sumScore += (value.marks / value.total) * 100;
+              numScore++;
+            }
+            if (value.completed) {
+              completed++;
+            }
+          }
+        }
+        const avg = numScore ? sumScore / numScore : null;
+        return { completed, attempted, avg };
+      }
+
+      function computeStreak() {
+        const dates = Object.keys(state.completionsByDate || {});
+        if (!dates.length) return { streak: 0, counts: {} };
+
+        const today = new Date();
+        const oneDay = 24 * 60 * 60 * 1000;
+        let streak = 0;
+        let counts = {};
+
+        for (let i = 0; i < 30; i++) {
+          const d = new Date(today.getTime() - i * oneDay);
+          const iso = d.toISOString().slice(0, 10);
+          const count = state.completionsByDate[iso] || 0;
+          counts[iso] = count;
+        }
+
+        // Current streak: consecutive days including today going backward
+        for (let i = 0; ; i++) {
+          const d = new Date(today.getTime() - i * oneDay);
+          const iso = d.toISOString().slice(0, 10);
+          const has = state.completionsByDate[iso] && state.completionsByDate[iso] > 0;
+          if (!has) break;
+          streak++;
+        }
+
+        return { streak, counts };
+      }
+
+      function renderHeatmapAndStreak() {
+        const { streak, counts } = computeStreak();
+        ui.streakDays.textContent = streak + (streak === 1 ? " day" : " days");
+
+        const cells = ui.heatmap.querySelectorAll(".heat-cell");
+        const dates = Object.keys(counts).sort(); // oldest -> newest
+        const last28 = dates.slice(-28);
+        for (let i = 0; i < cells.length; i++) {
+          const cell = cells[i];
+          cell.className = "heat-cell";
+          const date = last28[i];
+          if (!date) continue;
+          const val = counts[date] || 0;
+          if (val === 0) continue;
+          if (val === 1) cell.classList.add("heat-lvl-1");
+          else if (val === 2) cell.classList.add("heat-lvl-2");
+          else cell.classList.add("heat-lvl-3");
+        }
+      }
+
+      function renderDashboard() {
+        const g = computeGlobalStats();
+        ui.metricCompleted.textContent = g.completed;
+        ui.metricAttempted.textContent = g.attempted;
+        if (g.avg == null) {
+          ui.metricAverage.textContent = "–";
+          ui.metricAverageTrend.textContent = "Add marks to see averages";
+        } else {
+          ui.metricAverage.textContent = g.avg.toFixed(1);
+          ui.metricAverageTrend.textContent = g.avg >= 70 ? "You are trending strong" : "Push a little higher next set";
+        }
+        const [start, end] = clampYearRange(state.settings.startYear, state.settings.endYear);
+        ui.metricYearRange.textContent = start + "–" + end;
+        ui.metricYearRangeText.textContent = "Window applied to dashboard & workspace";
+
+        ui.metricCompletedTrend.textContent = "+" + (state.completionsByDate[getTodayISO()] || 0) + " today";
+        let last7 = 0;
+        const today = new Date();
+        const oneDay = 24 * 60 * 60 * 1000;
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today.getTime() - i * oneDay);
+          const iso = d.toISOString().slice(0, 10);
+          last7 += state.completionsByDate[iso] || 0;
+        }
+        ui.metricAttemptedTrend.textContent = "+" + last7 + " this week";
+
+        renderSubjectProgressList();
+        renderHeatmapAndStreak();
+      }
+
+      /* ---------- Data persistence for papers ---------- */
+
+      function savePaperField(paper, fields) {
+        const subj = ensureSubjectData(paper.subjectCode);
+        const key = paperKey(paper);
+        const stored = subj.papers[key] || {};
+        const next = Object.assign({}, stored, fields);
+        subj.papers[key] = next;
+        persistState();
+      }
+
+      function registerCompletionDate(isCompleted) {
+        const today = getTodayISO();
+        if (!state.completionsByDate) state.completionsByDate = {};
+        if (isCompleted) {
+          state.completionsByDate[today] = (state.completionsByDate[today] || 0) + 1;
+        }
+        persistState();
+      }
+
+      /* ---------- Notes modal ---------- */
+
+      function openNotesModal(paper, stored) {
+        currentNotesPaper = paper;
+        const subj = SUBJECTS.find(s => s.code === paper.subjectCode);
+        const label =
+          (subj ? subj.name : paper.subjectCode) +
+          " (" +
+          paper.subjectCode +
+          ") • " +
+          paper.year +
+          " " +
+          paper.seasonLabel +
+          " – Paper " +
+          paper.paper +
+          " Variant " +
+          paper.variant;
+        ui.notesModalContext.textContent = label;
+        ui.notesTextarea.value = stored && stored.notes ? stored.notes : "";
+        ui.notesFileInput.value = "";
+        const files = stored && Array.isArray(stored.files) ? stored.files : [];
+        renderNotesFilesList(files);
+        ui.notesModalBackdrop.classList.add("visible");
+      }
+
+      function renderNotesFilesList(files) {
+        ui.notesFilesList.innerHTML = "";
+        ui.notesFilesList.classList.toggle("empty", !files || !files.length);
+        if (!files || !files.length) {
+          ui.notesFilesList.textContent = "No files saved yet.";
+          return;
+        }
+        files.forEach(file => {
+          const div = document.createElement("div");
+          div.textContent =
+            (file.name || "Untitled") +
+            " (" +
+            (file.size != null ? Math.round(file.size / 1024) + " KB" : "size unknown") +
+            ")";
+          ui.notesFilesList.appendChild(div);
+        });
+      }
+
+      function closeNotesModal() {
+        ui.notesModalBackdrop.classList.remove("visible");
+        currentNotesPaper = null;
+      }
+
+      function saveNotesModal() {
+        if (!currentNotesPaper) return;
+        const subj = ensureSubjectData(currentNotesPaper.subjectCode);
+        const key = paperKey(currentNotesPaper);
+        const stored = subj.papers[key] || {};
+        const notesText = ui.notesTextarea.value || "";
+        const filesMeta = Array.from(ui.notesFileInput.files || []).map(f => ({
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          lastModified: f.lastModified
+        }));
+        const existingFiles = Array.isArray(stored.files) ? stored.files : [];
+        const mergedFiles =
+          filesMeta.length > 0
+            ? existingFiles.concat(filesMeta)
+            : existingFiles;
+
+        subj.papers[key] = Object.assign({}, stored, {
+          notes: notesText,
+          files: mergedFiles
+        });
+        persistState();
+        closeNotesModal();
+        renderPaperTable();
+      }
+
+      /* ---------- Export / import ---------- */
+
+      function exportData() {
+        const dataStr = JSON.stringify(state, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "paper-tracker-export-" + new Date().toISOString().slice(0, 10) + ".json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      function importDataFromFile(file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            const parsed = JSON.parse(String(e.target.result || "{}"));
+            state = mergeWithDefault(parsed);
+            persistState();
+            applyStateToUI();
+          } catch (err) {
+            alert("Could not import JSON. Please make sure it is a valid export.");
+            console.error(err);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      /* ---------- Event wiring ---------- */
+
+      function attachEventHandlers() {
+        // Course toggle
+        ui.courseToggle.addEventListener("click", e => {
+          const btn = e.target.closest(".chip-toggle-btn");
+          if (!btn) return;
+          const course = btn.dataset.course;
+          if (!course || course === state.settings.course) return;
+          state.settings.course = course;
+          persistState();
+          // When switching course, if current subject is not in that course, clear
+          if (currentSubjectCode) {
+            const subj = SUBJECTS.find(s => s.code === currentSubjectCode);
+            if (!subj || subj.course !== course) currentSubjectCode = null;
+          }
+          renderCourseToggle();
+          renderSubjectsGrid();
+          renderSubjectSubtitle();
+          renderPaperTable();
+          renderDashboard();
+        });
+
+        // Theme toggle
+        ui.themeToggle.addEventListener("click", () => {
+          const isLight = document.documentElement.classList.toggle("theme-light");
+          state.settings.theme = isLight ? "light" : "dark";
+          persistState();
+        });
+
+        // Subject search
+        ui.subjectSearch.addEventListener("input", () => {
+          renderSubjectsGrid();
+        });
+        ui.clearSubjectSearch.addEventListener("click", () => {
+          ui.subjectSearch.value = "";
+          renderSubjectsGrid();
+        });
+
+        // Year range
+        function onYearChange() {
+          const [s, e] = clampYearRange(
+            parseInt(ui.startYearInput.value, 10),
+            parseInt(ui.endYearInput.value, 10)
+          );
+          ui.startYearInput.value = s;
+          ui.endYearInput.value = e;
+          state.settings.startYear = s;
+          state.settings.endYear = e;
+          persistState();
+          renderSubjectSubtitle();
+          renderPaperTable();
+          renderDashboard();
+        }
+        ui.startYearInput.addEventListener("change", onYearChange);
+        ui.endYearInput.addEventListener("change", onYearChange);
+
+        // Filters
+        ui.filterSeason.addEventListener("change", () => {
+          state.settings.filterSeason = ui.filterSeason.value;
+          persistState();
+          renderPaperTable();
+        });
+        ui.filterPaper.addEventListener("change", () => {
+          state.settings.filterPaper = ui.filterPaper.value;
+          persistState();
+          renderPaperTable();
+        });
+        ui.completionFilter.addEventListener("click", e => {
+          const btn = e.target.closest("button");
+          if (!btn) return;
+          const stateVal = btn.dataset.state;
+          if (!stateVal) return;
+          state.settings.completionFilter = stateVal;
+          ui.completionFilter.querySelectorAll("button").forEach(b => {
+            b.classList.toggle("active", b.dataset.state === stateVal);
+          });
+          persistState();
+          renderPaperTable();
+        });
+
+        // Notes modal
+        ui.closeNotesModal.addEventListener("click", closeNotesModal);
+        ui.notesModalBackdrop.addEventListener("click", e => {
+          if (e.target === ui.notesModalBackdrop) {
+            closeNotesModal();
+          }
+        });
+        ui.saveNotesBtn.addEventListener("click", saveNotesModal);
+        ui.clearNotesBtn.addEventListener("click", () => {
+          ui.notesTextarea.value = "";
+          ui.notesFileInput.value = "";
+          renderNotesFilesList([]);
+        });
+        document.addEventListener("keydown", e => {
+          if (e.key === "Escape" && ui.notesModalBackdrop.classList.contains("visible")) {
+            closeNotesModal();
+          }
+        });
+
+        // Export/import
+        ui.exportBtn.addEventListener("click", exportData);
+        ui.importInput.addEventListener("change", () => {
+          const file = ui.importInput.files && ui.importInput.files[0];
+          if (!file) return;
+          importDataFromFile(file);
+          ui.importInput.value = "";
+        });
+      }
+
+      function applyStateToUI() {
+        // Theme
+        const themeLightActive = document.documentElement.classList.contains("theme-light");
+        const shouldBeLight = state.settings.theme === "light";
+        if (shouldBeLight !== themeLightActive) {
+          document.documentElement.classList.toggle("theme-light", shouldBeLight);
+        }
+
+        // Year & filters
+        const [s, e] = clampYearRange(state.settings.startYear, state.settings.endYear);
+        state.settings.startYear = s;
+        state.settings.endYear = e;
+        ui.startYearInput.value = s;
+        ui.endYearInput.value = e;
+        ui.filterSeason.value = state.settings.filterSeason || "all";
+        ui.filterPaper.value = state.settings.filterPaper || "all";
+        const cf = state.settings.completionFilter || "all";
+        ui.completionFilter.querySelectorAll("button").forEach(b => {
+          b.classList.toggle("active", b.dataset.state === cf);
+        });
+
+        renderCourseToggle();
+        renderSubjectsGrid();
+        renderSubjectSubtitle();
+        renderPaperTable();
+        renderDashboard();
+      }
+
+      /* ---------- Boot ---------- */
+
+      initRefs();
+      initThemeFromState();
+      initHeatmapSkeleton();
+      attachEventHandlers();
+      applyStateToUI();
+
+    })();
+  </script>
 </body>
 </html>
